@@ -15,7 +15,14 @@ import "../styles/global.css";
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <meta name="robots" content="index,follow" />
-    <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/webp" href="/images/icon.webp" />
+  <!-- Apple touch icon (some platforms accept webp; if you prefer PNG, add icon-180.png) -->
+  <link rel="apple-touch-icon" href="/images/icon.webp" />
+  <!-- Fallback PNG sizes for broader compatibility (add corresponding files if desired) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16.png" />
+  <!-- Theme color for mobile UI -->
+  <meta name="theme-color" content="#ffffff" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta property="og:title" content={title} />
