@@ -6,6 +6,7 @@ export interface Props {
 const { title = "Capalsa", description = "" } = Astro.props as Props;
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "../styles/fonts.css";
 import "../styles/global.css";
 ---
 <html lang="es">
@@ -23,8 +24,7 @@ import "../styles/global.css";
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16.png" />
   <!-- Theme color for mobile UI -->
   <meta name="theme-color" content="#ffffff" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Removed Google Fonts preconnects: loading fonts locally from /fonts -->
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />

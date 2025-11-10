@@ -1,6 +1,23 @@
 ---
 // --- INICIO DE CAMBIOS: Aceptar props ---
 const { id, class: className } = Astro.props;
+import { Image } from 'astro:assets';
+
+// Importar imágenes estáticamente para que Astro las optimice
+import cap1Img from '../../public/images/cap1.webp';
+import cap2Img from '../../public/images/cap2.webp';
+import cap3Img from '../../public/images/cap3.webp';
+
+import cpap1Img from '../../public/images/cpap1.webp';
+import cpap2Img from '../../public/images/cpap2.webp';
+import cpap3cImg from '../../public/images/cpap3c.webp';
+import wpImg from '../../public/images/wp.webp';
+import toys3Img from '../../public/images/toys3.webp';
+import toys1Img from '../../public/images/toys1.webp';
+import toys2Img from '../../public/images/toys2.webp';
+import mas3Img from '../../public/images/mas3.webp';
+import mas1Img from '../../public/images/mas1.webp';
+import mas2Img from '../../public/images/mas2.webp';
 // --- FIN DE CAMBIOS: Aceptar props ---
 
 const divisions = [
@@ -11,9 +28,9 @@ const divisions = [
     description: "Dinos qué necesitas, nosotros lo conseguimos, validamos y entregamos.",
     href: "#contacto",
     imageBg: "/images/wp.webp", // Fondo general
-    imageMain: "/images/cap1.webp",
-    imageBw1: "/images/cap2.webp",
-    imageBw2: "/images/cap3.webp",
+  imageMain: cap1Img,
+  imageBw1: cap2Img,
+  imageBw2: cap3Img,
   },
   {
     index: "02",
@@ -21,10 +38,10 @@ const divisions = [
     bigTitle: "JUGUETES",
     description: "Selección curada para mercados específicos, experiencia comprobada.",
     href: "https://juguetes.capalsa.com",
-    imageBg: "/images/wp.webp",
-    imageMain: "/images/toys3.webp",
-    imageBw1: "/images/toys1.webp",
-    imageBw2: "/images/toys2.webp",
+  imageBg: "/images/wp.webp",
+  imageMain: toys3Img,
+  imageBw1: toys1Img,
+  imageBw2: toys2Img,
   },
   {
     index: "03",
@@ -33,9 +50,9 @@ const divisions = [
     description: "Equipos y accesorios para terapia respiratoria; vertical dedicada al sector salud.",
     href: "https://cpap.capalsa.com",
     imageBg: "/images/wp.webp",
-    imageMain: "/images/cpap3c.webp",
-    imageBw1: "/images/cpap1.webp",
-    imageBw2: "/images/cpap2.webp",
+  imageMain: cpap3cImg,
+  imageBw1: cpap1Img,
+  imageBw2: cpap2Img,
   },
   {
     index: "04",
@@ -43,10 +60,10 @@ const divisions = [
     bigTitle: "MÁS",
     description: "Expansión continua de categorías para cubrir lo que tu empresa necesita.",
     href: "#contacto",
-    imageBg: "/images/wp.webp",
-    imageMain: "/images/mas3.webp",
-    imageBw1: "/images/mas1.webp",
-    imageBw2: "/images/mas2.webp",
+  imageBg: "/images/wp.webp",
+  imageMain: mas3Img,
+  imageBw1: mas1Img,
+  imageBw2: mas2Img,
   },
 ];
 const totalHeight = `calc(${divisions.length} * 100vh)`;
@@ -156,7 +173,7 @@ background-size: cover; background-position: center;`}
                 <!-- Imagen principal en móvil -->
                 <div class="mb-6 w-full max-w-xs sm:max-w-sm z-10">
                   <div class="relative w-full aspect-[4/3] bg-white p-2 sm:p-3 rounded-lg shadow-xl">
-                    <img src={d.imageMain} alt={d.bigTitle} class="w-full h-full object-cover rounded"/> 
+                    <Image src={d.imageMain as any} alt={d.bigTitle} class="w-full h-full object-cover rounded" inferSize={true} /> 
                   </div>
                 </div>
 
@@ -191,17 +208,17 @@ background-size: cover; background-position: center;`}
                 <div class="absolute inset-0 z-10">
                   <!-- Imagen pequeña superior izquierda (solo desktop) -->
                   <div class="absolute" style="top: 150px; left: 20px; width: 200px; height: 150px; z-index: 20; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"> 
-                    <img src={d.imageBw1} alt="" class="w-full h-full object-cover grayscale"/> 
+                    <Image src={d.imageBw1 as any} alt="" class="w-full h-full object-cover grayscale" inferSize={true} /> 
                   </div>
                   
                   <!-- Imagen principal (desktop) -->
                   <div class="absolute" style="top: 50%; left: 70%; transform: translate(-50%, -50%); width: 350px; height: 280px; z-index: 30; background: white; padding: 12px; border-radius: 6px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);"> 
-                    <img src={d.imageMain} alt={d.bigTitle} class="w-full h-full object-cover"/> 
+                    <Image src={d.imageMain as any} alt={d.bigTitle} class="w-full h-full object-cover" inferSize={true} /> 
                   </div>
                   
                   <!-- Imagen pequeña inferior derecha (solo desktop) -->
                   <div class="absolute" style="bottom: 80px; right: 20px; width: 240px; height: 180px; z-index: 10; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"> 
-                    <img src={d.imageBw2} alt="" class="w-full h-full object-cover grayscale"/> 
+                    <Image src={d.imageBw2 as any} alt="" class="w-full h-full object-cover grayscale" inferSize={true} /> 
                   </div>
                 </div>
               </div>
