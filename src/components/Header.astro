@@ -1,0 +1,367 @@
+---
+const nav = [
+  { label: "Inicio", href: "/" },
+  { label: "Clientes", href: "/#clientes" },
+  { label: "Soluciones", href: "/#soluciones" },
+  { label: "Cómo trabajamos", href: "/#sobre" },
+  { label: "Contacto", href: "/#contacto" },
+];
+---
+<header class="fixed top-0 left-0 right-0 z-50 bg-black text-white">
+  <div class="pointer-events-none absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-orange-500/60 to-transparent"></div>
+  <div class="mx-auto max-w-7xl px-8 lg:px-12 h-20 flex items-center justify-between">
+    <a href="/" class="font-bold tracking-tight text-xl hover:opacity-70 transition-opacity">
+      CAPALSA
+    </a>
+    <nav id="desktop-nav" class="hidden min-[1026px]:flex items-center gap-10">
+      {nav.map((item) => (
+        <a href={item.href} data-key={item.label.toLowerCase()} class="group flex items-center gap-2 text-sm uppercase tracking-wider hover:text-orange-400 transition-colors">
+          <span>{item.label}</span>
+          <span class="arrow text-white/60 group-hover:text-orange-400 transition-colors">→</span>
+        </a>
+      ))}
+    </nav>
+    <button id="menu-toggle" aria-expanded="false" aria-controls="mobile-overlay" class="min-[1026px]:hidden text-sm uppercase tracking-wider px-3 py-2 border border-white/20 rounded-md hover:bg-white/10 transition-colors">
+      Menu
+    </button>
+  </div>
+
+  <div id="mobile-overlay" class="hidden min-[1026px]:hidden fixed left-0 right-0 bottom-0 top-20 z-60">
+    <div id="overlay-panel" class="absolute inset-0 overflow-hidden">
+      <div id="overlay-reveal" class="absolute inset-0 bg-black will-change-auto"></div>
+      <div id="overlay-content" class="absolute inset-0 px-8 pb-10 flex flex-col justify-end">
+        <nav class="flex flex-col divide-y divide-white/10 mb-6">
+          {nav.map((item, i) => (
+            <a href={item.href} data-key={item.label.toLowerCase()} class="group flex items-center gap-3 py-5 opacity-0 translate-y-3" style={`transition: opacity 300ms ease-out, transform 300ms ease-out; transition-delay: ${120 + i*60}ms;`}>
+              <span class="text-2xl font-bold uppercase tracking-tight flex-1 group-hover:text-orange-400 transition-colors">{item.label}</span>
+              <span class="arrow text-xl text-white/60 group-hover:text-orange-400 transition-colors">→</span>
+            </a>
+          ))}
+        </nav>
+        <div class="text-xs text-white/50 opacity-0 transition-opacity duration-300 flex justify-center">
+          Hecho con ❤️ por <a href="https://tecnomata.com" target="_blank" rel="noopener noreferrer" class="hover:text-orange-400 transition-colors">Tecnomata</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const toggle = document.getElementById('menu-toggle');
+  const overlay = document.getElementById('mobile-overlay');
+  const reveal = document.getElementById('overlay-reveal');
+  const content = document.getElementById('overlay-content');
+  const panel = document.getElementById('overlay-panel');
+  
+  function openMenu(){
+    overlay.classList.remove('hidden');
+    if(reveal){
+      reveal.style.transition = 'clip-path 480ms cubic-bezier(0.22, 1, 0.36, 1)';
+      reveal.style.clipPath = 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)';
+      requestAnimationFrame(()=>{
+        reveal.style.clipPath = 'polygon(100% 0%, 100% 0%, 0% 100%, 100% 100%)';
+        setTimeout(()=>{
+          reveal.style.clipPath = 'polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%)';
+        }, 240);
+      });
+    }
+    toggle?.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+    toggle?.classList.add('relative','z-[70]');
+    toggle && (toggle.textContent = 'Cerrar');
+    const links = overlay.querySelectorAll('#overlay-content a');
+    const footer = overlay.querySelector('#overlay-content > div.text-xs');
+    setTimeout(()=>{
+      links.forEach((l)=>{
+        l.classList.remove('opacity-0','translate-y-3');
+        l.classList.add('opacity-100','translate-y-0');
+      });
+      if(footer){
+        footer.classList.remove('opacity-0');
+        footer.classList.add('opacity-100');
+      }
+    }, 240);
+  }
+
+  function closeMenu(){
+    const links = overlay.querySelectorAll('#overlay-content a');
+    const footer = overlay.querySelector('#overlay-content > div.text-xs');
+    links.forEach((l)=>{
+      l.classList.add('opacity-0','translate-y-3');
+      l.classList.remove('opacity-100','translate-y-0');
+    });
+    if(footer){
+      footer.classList.remove('opacity-100');
+      footer.classList.add('opacity-0');
+    }
+    setTimeout(()=>{
+      if(reveal){
+        reveal.style.transition = 'clip-path 420ms cubic-bezier(0.22, 1, 0.36, 1)';
+        reveal.style.clipPath = 'polygon(100% 0%, 100% 0%, 0% 100%, 100% 100%)';
+        setTimeout(()=>{
+          reveal.style.transition = 'clip-path 420ms cubic-bezier(0.22, 1, 0.36, 1)';
+          reveal.style.clipPath = 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)';
+        }, 420);
+      }
+    }, 300);
+    toggle?.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+    setTimeout(()=>overlay.classList.add('hidden'), 1200);
+    toggle?.classList.remove('z-[70]');
+    toggle && (toggle.textContent = 'Menu');
+  }
+
+  toggle?.addEventListener('click', ()=>{
+    if(overlay.classList.contains('hidden')) openMenu(); else closeMenu();
+  });
+  panel?.addEventListener('click', (e)=>{
+    if(!(e.target instanceof Element)) return;
+    if(!e.target.closest('#overlay-content')) closeMenu();
+  });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
+  window.addEventListener('resize', ()=>{ if(window.innerWidth >= 1026){ closeMenu(); } });
+
+  function resolveActiveKey(){
+    const { pathname, hash } = window.location;
+    if(pathname === '/contacto') return 'contacto';
+    if(pathname === '/' && (hash === '#clientes')) return 'clientes';
+    if(pathname === '/' && (hash === '#soluciones')) return 'soluciones';
+    if(pathname === '/' && (hash === '#sobre')) return 'cómo trabajamos';
+    if(pathname === '/' && (hash === '#contacto')) return 'contacto';
+    return 'inicio';
+  }
+  function applyActive(){
+    const key = resolveActiveKey();
+    document.querySelectorAll('[data-key]').forEach((el)=>{
+      const isActive = (el.getAttribute('data-key')||'') === key;
+      if(isActive){
+        el.classList.add('text-orange-400');
+        const arrow = el.querySelector('.arrow');
+        arrow?.classList.add('text-orange-400');
+      } else {
+        el.classList.remove('text-orange-400');
+        const arrow = el.querySelector('.arrow');
+        arrow?.classList.remove('text-orange-400');
+      }
+    });
+  }
+  applyActive();
+  window.addEventListener('hashchange', applyActive);
+  window.addEventListener('popstate', applyActive);
+
+   // --- FUNCIÓN HELPER PARA SCROLL ---
+   function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // Busca el 'anfitrión' (el div que crea la pausa)
+    // Usamos 'parentElement' 2 veces.
+    // el = <section id="...">
+    // el.parentElement = <div sticky ...>
+    // el.parentElement.parentElement = <div relative h-[150vh] ...>
+    // 'Authority' (clientes) es un caso especial, no tiene wrapper.
+    let targetElement = el;
+    if (id !== 'clientes') {
+      targetElement = el.parentElement?.parentElement || el;
+    }
+    
+    // Si el elemento al que apuntamos es <body>, algo salió mal,
+    // así que solo usamos el 'el' original.
+    if (targetElement.tagName === 'BODY') {
+      targetElement = el;
+    }
+
+    const rect = targetElement.getBoundingClientRect();
+    const absoluteTop = rect.top + window.pageYOffset;
+    const targetY = absoluteTop - 80; // compensar header fijo (h-20)
+    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    
+    // Actualizar URL y estado activo
+    const newHash = `#${id}`;
+    if(history.pushState) {
+      history.pushState({}, '', newHash);
+    } else {
+      window.location.hash = newHash;
+    }
+    applyActive();
+  }
+   // --- FIN DE FUNCIÓN HELPER ---
+
+   // Smooth scroll for mobile menu
+   document.querySelectorAll('#mobile-overlay a[data-key]').forEach((link)=>{
+     link.addEventListener('click', (e)=>{
+       const href = link.getAttribute('href') || '';
+       const key = link.getAttribute('data-key') || '';
+       const onHome = window.location.pathname === '/';
+       
+       if(key === 'inicio' || href === '/' || href === ''){
+         e.preventDefault();
+         if(!onHome){ window.location.href = '/'; closeMenu(); return; }
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+         history.pushState({}, '', '/');
+         applyActive();
+         closeMenu();
+         return;
+       }
+       
+       if(href.startsWith('/#')){
+         e.preventDefault();
+         const id = href.slice(2);
+         if(!onHome){ window.location.href = href; closeMenu(); return; }
+         
+         scrollToSection(id); // Usa la nueva función
+         closeMenu();
+         return;
+       }
+       closeMenu();
+     });
+   });
+
+  // Desktop: smooth scroll
+  document.querySelectorAll('#desktop-nav a[data-key]').forEach((link)=>{
+    link.addEventListener('click', (e)=>{
+      const key = link.getAttribute('data-key') || '';
+      const href = link.getAttribute('href') || '';
+      const onHome = window.location.pathname === '/';
+      
+      if(key === 'inicio' || href === '/' || href === ''){
+        e.preventDefault();
+        if(!onHome){ window.location.href = '/'; return; }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        history.pushState({}, '', '/');
+        applyActive();
+        return;
+      }
+      
+      if(href.startsWith('/#')){
+        e.preventDefault();
+        const id = href.slice(2);
+        if(!onHome){ window.location.href = href; return; }
+        
+        scrollToSection(id); // Usa la nueva función
+        return;
+      }
+    });
+  });
+
+  // Handle scroll to section when page loads with hash
+  function scrollToHashOnLoad(){
+    if(window.location.pathname !== '/') return;
+    const hash = window.location.hash;
+    if(!hash || hash === '#') return;
+    
+    const id = hash.slice(1);
+    setTimeout(()=>{
+      // No podemos usar 'scrollToSection' aquí porque la URL ya está actualizada
+      // Esta lógica es la original y es correcta para la carga de página
+      const el = document.getElementById(id);
+      if(el){
+        // ESTA lógica de wrapper SÍ es necesaria aquí
+        let targetElement = el;
+        if (id !== 'clientes') {
+          targetElement = el.parentElement?.parentElement || el;
+        }
+        if (targetElement.tagName === 'BODY') {
+          targetElement = el;
+        }
+        
+        const rect = targetElement.getBoundingClientRect();
+        const absoluteTop = rect.top + window.pageYOffset;
+        const targetY = absoluteTop - 80;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      }
+    }, 100);
+  }
+  
+  if(document.readyState === 'loading'){
+    window.addEventListener('DOMContentLoaded', scrollToHashOnLoad);
+  } else {
+    scrollToHashOnLoad();
+  }
+
+  // Scroll-spy: update active item while scrolling on home
+  window.addEventListener('DOMContentLoaded', ()=>{
+    if(window.location.pathname !== '/') return;
+    const mapKeyToUrl = {
+      'inicio': '/',
+      'clientes': '/#clientes',
+      'soluciones': '/#soluciones',
+      'cómo trabajamos': '/#sobre',
+      'contacto': '/#contacto'
+    };
+    let lastKey = resolveActiveKey();
+    function setActiveKey(nextKey){
+      if(nextKey === lastKey) return;
+      lastKey = nextKey;
+      const url = mapKeyToUrl[nextKey] || '/';
+      history.replaceState({}, '', url);
+      applyActive();
+    }
+
+    const ids = ['clientes','soluciones','sobre','contacto'];
+    let sectionTargets = [];
+
+    function setupObserver() {
+      // Mapear los 'id' a los elementos correctos (los wrappers si existen)
+      sectionTargets = ids.map((id)=>{
+        const el = document.getElementById(id);
+        if (!el) return null;
+        
+        // 'clientes' es el wrapper en sí
+        if (id === 'clientes') return el;
+        
+        // Para 'soluciones' (Divisions), usar el elemento directamente
+        // porque tiene una estructura especial con scroll interno
+        if (id === 'soluciones') return el;
+        
+        // Para los demás, busca el anfitrión (wrapper con h-[150vh])
+        const hostWrapper = el.parentElement?.parentElement;
+        return (hostWrapper && hostWrapper.tagName !== 'BODY') ? hostWrapper : el;
+      }).filter((el)=>!!el);
+
+      if(!sectionTargets.length) return;
+
+      const observer = new IntersectionObserver((entries)=>{
+        let best = null;
+        let bestRatio = 0;
+        for(const entry of entries){
+          if(entry.isIntersecting && entry.intersectionRatio > bestRatio){
+            best = entry;
+            bestRatio = entry.intersectionRatio;
+          }
+        }
+        if(best){
+          // Busca el ID en la sección interna o usa el ID del elemento observado
+          let id = best.target.id;
+          // Si el elemento observado no tiene el ID, busca dentro
+          if(!ids.includes(id)){
+            const sectionInside = best.target.querySelector(`section[id="${ids.join('"], section[id="')}"]`);
+            if(sectionInside) id = sectionInside.id;
+          }
+          
+          // Si aún no tenemos un ID válido, intenta encontrarlo por clase
+          if(!ids.includes(id)){
+            const mainSection = best.target.closest('.main-page-section');
+            if(mainSection && mainSection.id) id = mainSection.id;
+          }
+          
+          let key = id;
+          if(id === 'sobre') key = 'cómo trabajamos';
+          if(ids.includes(id)) {
+            setActiveKey(key);
+          }
+        }
+      }, { root: null, rootMargin: '-20% 0px -50% 0px', threshold: [0,0.1,0.25,0.5,0.75,1] });
+      
+      sectionTargets.forEach((s)=>observer.observe(s));
+    }
+
+    // Esperar a 'load' asegura que todos los scripts (incluido el de Authority)
+    // hayan podido ejecutarse y el DOM esté estable.
+    window.addEventListener('load', setupObserver);
+
+    window.addEventListener('scroll', ()=>{
+      if(window.scrollY < 80){ setActiveKey('inicio'); }
+    }, { passive: true });
+  });
+</script>

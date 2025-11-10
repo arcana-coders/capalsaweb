@@ -1,0 +1,427 @@
+---
+const { id, class: className } = Astro.props;
+
+const steps = [
+  {
+    number: "01",
+    title: "Sourcing ágil",
+    description: "Conectamos con proveedores confiables en tiempo récord. Nuestra red global y procesos optimizados garantizan acceso inmediato a los productos que necesitas.",
+    image: "/images/how3.webp"
+  },
+  {
+    number: "02", 
+    title: "Control de calidad",
+    description: "Cada producto pasa por rigurosas inspecciones. Nuestro equipo técnico valida especificaciones, certificaciones y estándares internacionales antes de la entrega.",
+    image: "/images/how1.webp"
+  },
+  {
+    number: "03",
+    title: "Logística continua",
+    description: "Coordinamos el flujo completo desde origen hasta destino. Seguimiento en tiempo real, documentación aduanal y entrega puntual garantizada.",
+    image: "/images/how2.webp"
+  }
+];
+---
+<section id={id} class:list={[className, "relative z-15 min-h-screen bg-white overflow-hidden"]} {...Astro.props}>
+  
+  <!-- Container principal con padding generoso -->
+  <div id="about-scroll-container" class="relative min-h-screen">
+    <div class="mx-auto max-w-[1600px] w-full px-8 sm:px-12 lg:px-24 xl:px-32">
+      
+      <!-- Header ultra minimalista -->
+      <div class="about-header min-h-screen flex flex-col justify-center">
+        <p class="text-xs uppercase tracking-[0.4em] text-neutral-400 mb-12 font-medium">(04) Cómo trabajamos</p>
+        <h2 class="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight leading-[0.9] text-black mb-0">
+          Metodología de<br />
+          <span class="text-orange-500">abastecimiento</span>
+        </h2>
+      </div>
+
+      <!-- Work items con mucho espacio en blanco -->
+      {steps.map((step, index) => {
+        const isEven = index % 2 === 0;
+        return (
+          <div class="work-item min-h-screen flex items-center" data-step={index}>
+            <div class:list={[
+              "grid grid-cols-1 gap-12 lg:gap-20 xl:gap-24 items-center w-full",
+              isEven ? "lg:grid-cols-[1fr,0.8fr]" : "lg:grid-cols-[0.8fr,1fr]"
+            ]}>
+              
+              {/* Visual a la izquierda en pares, derecha en impares */}
+              <div class:list={[
+                "work-visual relative",
+                !isEven && "lg:order-2"
+              ]}>
+                <div class="relative aspect-3/4 max-w-md mx-auto rounded-2xl bg-neutral-100 overflow-hidden group cursor-pointer">
+                  <!-- Image background -->
+                  <img src={step.image} alt={step.title} loading="lazy" class="absolute inset-0 w-full h-full object-cover z-0" />
+
+                  {/* Número gigante de fondo (sobre la imagen) */}
+                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-10">
+                    <div class="work-number text-[18vw] sm:text-[14vw] lg:text-[10vw] font-black text-white/18 leading-none drop-shadow-sm">
+                      {step.number}
+                    </div>
+                  </div>
+
+                  {/* Icono flotante central */}
+                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                    <div class="work-icon w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-2xl shadow-black/10 transition-all duration-500 group-hover:scale-110">
+                      {index === 0 && (
+                        <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                      )}
+                      {index === 1 && (
+                        <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      )}
+                      {index === 2 && (
+                        <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Overlay gradient sutil */}
+                  <div class="work-overlay absolute inset-0 bg-linear-to-br from-transparent via-transparent to-black/6 opacity-0 transition-opacity duration-700 group-hover:opacity-60 z-5"></div>
+                </div>
+              </div>
+
+              {/* Contenido a la derecha en pares, izquierda en impares */}
+              <div class:list={[
+                "work-content flex flex-col justify-center",
+                !isEven && "lg:order-1"
+              ]}>
+                <div class="space-y-6">
+                  {/* Número y línea */}
+                  <div class="flex items-center gap-6">
+                    <span class="work-label text-sm md:text-base font-semibold text-orange-500 tracking-[0.3em]">{step.number}</span>
+                    <div class="work-line h-px bg-orange-500/30 flex-1"></div>
+                  </div>
+                  
+                  {/* Título gigante */}
+                  <h3 class="work-title text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95] text-black">
+                    {step.title}
+                  </h3>
+                  
+                  {/* Descripción con espacio */}
+                  <p class="work-description text-lg md:text-xl lg:text-2xl text-neutral-500 leading-relaxed font-light max-w-2xl pt-2">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        );
+      })}
+
+    </div>
+  </div>
+
+  <script is:inline>
+    // Sistema de navegación interna estilo slides + refinamiento Locomotive
+    (function() {
+      const aboutSection = document.getElementById('sobre');
+      if (!aboutSection) return;
+
+      const container = document.getElementById('about-scroll-container');
+      const workItems = Array.from(aboutSection.querySelectorAll('.work-item'));
+      const header = aboutSection.querySelector('.about-header');
+      
+      // Total de subsecciones: header + 3 steps = 4
+      const allSections = [header, ...workItems];
+      let currentSubIndex = 0;
+      let isThrottled = false;
+      const throttleTime = 800;
+
+      // Configurar animaciones de entrada
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px',
+        threshold: [0, 0.1, 0.3]
+      };
+
+      // Animar header
+      if (header) {
+        header.style.opacity = '0';
+        header.style.transform = 'translateY(60px)';
+        
+        const headerObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+              entry.target.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+              headerObserver.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+        
+        headerObserver.observe(header);
+      }
+
+      // Animar work items
+      workItems.forEach(function(item) {
+        const visual = item.querySelector('.work-visual');
+        const title = item.querySelector('.work-title');
+        const description = item.querySelector('.work-description');
+        const line = item.querySelector('.work-line');
+
+        // Estados iniciales
+        if (visual) {
+          visual.style.opacity = '0';
+          visual.style.transform = 'scale(0.9) translateY(30px)';
+        }
+        if (title) {
+          title.style.opacity = '0';
+          title.style.transform = 'translateY(40px)';
+        }
+        if (description) {
+          description.style.opacity = '0';
+          description.style.transform = 'translateY(30px)';
+        }
+        if (line) {
+          line.style.transform = 'scaleX(0)';
+          line.style.transformOrigin = 'left';
+        }
+
+        const itemObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+              
+              setTimeout(function() {
+                if (visual) {
+                  visual.style.opacity = '1';
+                  visual.style.transform = 'scale(1) translateY(0)';
+                  visual.style.transition = 'opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                }
+              }, 100);
+
+              setTimeout(function() {
+                if (line) {
+                  line.style.transform = 'scaleX(1)';
+                  line.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                }
+              }, 300);
+
+              setTimeout(function() {
+                if (title) {
+                  title.style.opacity = '1';
+                  title.style.transform = 'translateY(0)';
+                  title.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+                }
+              }, 500);
+
+              setTimeout(function() {
+                if (description) {
+                  description.style.opacity = '1';
+                  description.style.transform = 'translateY(0)';
+                  description.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+                }
+              }, 700);
+
+              itemObserver.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        itemObserver.observe(item);
+      });
+
+      // Parallax suave en números
+      let rafId = null;
+      
+      function updateParallax() {
+        const rect = aboutSection.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+          const progress = Math.max(0, Math.min(1, 
+            (window.innerHeight - rect.top) / (window.innerHeight + rect.height)
+          ));
+          
+          workItems.forEach(function(item, idx) {
+            const number = item.querySelector('.work-number');
+            if (number) {
+              const speed = 20 + (idx * 3);
+              const yPos = progress * speed - (speed / 2);
+              number.style.transform = 'translateY(' + yPos + 'px)';
+            }
+          });
+        }
+      }
+
+      function onScroll() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(updateParallax);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // NAVEGACIÓN INTERNA - Control de wheel
+      function scrollToSubsection(index) {
+        if (index < 0 || index >= allSections.length) return;
+        currentSubIndex = index;
+        const target = allSections[index];
+        if (!target) return;
+        const rect = target.getBoundingClientRect();
+        const scrollY = window.scrollY;
+        const headerOffset = 70; // compensar header global
+        const targetY = scrollY + rect.top - headerOffset;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      }
+
+      function handleWheel(e) {
+        if (isThrottled) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        const deltaY = e.deltaY;
+        const goingDown = deltaY > 0;
+        const goingUp = deltaY < 0;
+
+        // Si estamos en el header y vamos hacia arriba, dejar que el scroll global maneje
+        if (currentSubIndex === 0 && goingUp) {
+          // Emitir evento para que Layout nos mueva a la sección anterior
+          aboutSection.dispatchEvent(new CustomEvent('requestPrevSection', { bubbles: true }));
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        // Si estamos en el último step y vamos hacia abajo, dejar que el scroll global maneje
+        if (currentSubIndex === allSections.length - 1 && goingDown) {
+          // Emitir evento para que Layout nos mueva a la siguiente sección
+          aboutSection.dispatchEvent(new CustomEvent('requestNextSection', { bubbles: true }));
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        // Navegación interna
+        if (goingDown && currentSubIndex < allSections.length - 1) {
+          e.preventDefault();
+          e.stopPropagation();
+          isThrottled = true;
+          scrollToSubsection(currentSubIndex + 1);
+          setTimeout(function() { isThrottled = false; }, throttleTime);
+        } else if (goingUp && currentSubIndex > 0) {
+          e.preventDefault();
+          e.stopPropagation();
+          isThrottled = true;
+          scrollToSubsection(currentSubIndex - 1);
+          setTimeout(function() { isThrottled = false; }, throttleTime);
+        }
+      }
+
+      // Detectar en qué subsección estamos basándonos en scroll
+      function updateCurrentSubsection() {
+        const rect = aboutSection.getBoundingClientRect();
+        
+        // Si la sección no está visible, no actualizar
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+        let bestIndex = 0;
+        let minDistance = Infinity;
+
+        allSections.forEach(function(section, index) {
+          if (!section) return;
+          const subRect = section.getBoundingClientRect();
+          const distance = Math.abs(subRect.top);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestIndex = index;
+          }
+        });
+
+        if (bestIndex !== currentSubIndex) {
+          currentSubIndex = bestIndex;
+        }
+      }
+
+      // Adjuntar inmediatamente el wheel listener (capture para ganar prioridad)
+      aboutSection.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+      // Forzar detección inicial cuando entramos desde la sección anterior
+      updateCurrentSubsection();
+
+      // Initial snap: cuando About aparece por primera vez, asegurar que el header quede visible
+      let didInitialSnap = false;
+      const initialObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.6 && !didInitialSnap) {
+            // Solo hacer snap si no estamos en medio de una animación
+            if (!isThrottled) {
+              didInitialSnap = true;
+              // Pequeño delay para no chocar con otros scrolls
+              setTimeout(function() {
+                scrollToSubsection(0);
+              }, 60);
+            }
+          }
+        });
+      }, { threshold: [0.6] });
+      initialObserver.observe(aboutSection);
+
+      // Actualizar subsección actual en scroll
+      let scrollTimeout = null;
+      window.addEventListener('scroll', function() {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateCurrentSubsection, 100);
+      }, { passive: true });
+
+    })();
+  </script>
+
+  <style>
+    /* Base Locomotive-inspired refinements */
+    .about-header h2 span { display: inline-block; }
+    /* Mobile-safe heading: clamp so it never overflows */
+    .about-header h2 {
+      font-size: clamp(2.2rem, 8.5vw, 5.6rem);
+      line-height: 1;
+      max-width: 96%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+    }
+    .work-item { position: relative; }
+    .work-visual { will-change: transform, opacity; transition: box-shadow .6s cubic-bezier(0.16,1,0.3,1); }
+    /* Slight bleed on large screens to feel more editorial */
+    @media (min-width: 1024px) {
+      .work-visual { max-width: calc(50rem); }
+      .work-visual:not(.lg\:order-2) { margin-left: -4vw; }
+      .work-visual.lg\:order-2 { margin-right: -4vw; }
+    }
+    .work-visual::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(to bottom,rgba(0,0,0,0) 60%,rgba(0,0,0,0.04)); opacity:0; transition:opacity .8s ease; }
+    .work-visual:hover::after { opacity:1; }
+  .work-number { will-change: transform; transition: transform .12s linear; filter:contrast(105%); font-size: clamp(3.6rem, 16vw, 8rem); }
+    .work-icon { will-change: transform; backdrop-filter: blur(6px); }
+    .work-title { letter-spacing:-0.02em; }
+    .work-description { font-feature-settings:"liga" on,"kern" on; }
+    .work-line { transform-origin:left; }
+
+    /* Subtle textured background for the section */
+    section[id] {
+      background-image: radial-gradient(circle at 10% 10%, rgba(0,0,0,0.012), transparent 8%), radial-gradient(circle at 90% 90%, rgba(0,0,0,0.01), transparent 12%);
+      background-repeat: no-repeat;
+    }
+    .work-visual:hover { box-shadow:0 28px 60px -18px rgba(0,0,0,0.25); }
+    .work-visual:hover .work-icon { transform:scale(1.08); transition:transform .5s cubic-bezier(0.16,1,0.3,1); }
+    .work-label { font-weight:600; }
+
+    /* Scroll hint (solo visible en header) */
+    .about-header::after { content:"SCROLL"; position:absolute; bottom:3rem; left:0; font-size:.65rem; letter-spacing:.5em; color:#999; opacity:.4; }
+
+    /* Accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation:none !important; transition:none !important; }
+    }
+  </style>
+
+</section>

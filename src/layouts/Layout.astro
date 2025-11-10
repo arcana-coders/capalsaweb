@@ -1,0 +1,282 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = "Capalsa", description = "" } = Astro.props as Props;
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+
+    <style>
+      html {
+        /* El scroll-behavior: smooth global puede interferir
+           con los scripts. Lo quitamos de aquí y dejamos
+           que los scripts lo manejen con 'behavior: smooth'. */
+        scroll-behavior: auto;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <Header />
+    <main class="relative z-20 bg-white">
+  
+    <slot />
+    </main>
+    <Footer />
+
+    <!-- --- INICIO DEL SCRIPT GLOBAL (DIRECTOR DE ORQUESTA) --- -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        
+        // 1. Encontrar todas las SECCIONES PRINCIPALES (los anclajes)
+        const sections = Array.from(document.querySelectorAll('.main-page-section'));
+        if (sections.length === 0) return;
+
+        // 2. Variables de estado
+        let currentSectionIndex = 0;
+        let isThrottled = false;
+        // Este tiempo debe ser suficientemente largo para que la
+        // animación 'smooth' termine antes de permitir otro salto.
+        const throttleTime = 1000; // 1 segundo
+
+        // 3. Función para determinar en qué sección estamos basándose en scroll
+        function updateCurrentSection() {
+          const scrollY = window.scrollY;
+          const viewportHeight = window.innerHeight;
+          const viewportCenter = scrollY + viewportHeight * 0.5;
+          
+          // Si estamos muy cerca del top, estamos en el hero
+          if (scrollY < 100) {
+            if (currentSectionIndex !== 0) {
+              currentSectionIndex = 0;
+            }
+            return;
+          }
+          
+          // Encontrar la sección cuyo centro está más cerca del centro del viewport
+          let bestIndex = currentSectionIndex;
+          let minDistance = Infinity;
+          
+          sections.forEach((section, index) => {
+            const rect = (section as HTMLElement).getBoundingClientRect();
+            // rect.top es relativo al viewport, convertir a absoluto
+            const sectionTopAbsolute = scrollY + rect.top;
+            const sectionCenter = sectionTopAbsolute + rect.height / 2;
+            const distance = Math.abs(viewportCenter - sectionCenter);
+            
+            // Para el hero (index 0), solo considerarlo si estamos muy arriba
+            if (index === 0) {
+              if (scrollY < 150) {
+                if (distance < minDistance) {
+                  bestIndex = 0;
+                  minDistance = distance;
+                }
+              }
+            } else {
+              // Para otras secciones, considerar si están visibles en el viewport
+              // rect está en coordenadas del viewport, así que usamos rect directamente
+              if (rect.top < viewportHeight * 0.7 && rect.bottom > viewportHeight * 0.3) {
+                if (distance < minDistance) {
+                  bestIndex = index;
+                  minDistance = distance;
+                }
+              }
+            }
+          });
+          
+          if (bestIndex !== currentSectionIndex && minDistance < Infinity) {
+            currentSectionIndex = bestIndex;
+          }
+        }
+
+        // 4. Observer para saber en qué sección principal estamos (complementario)
+        const observer = new IntersectionObserver(
+          (entries) => {
+            // Encontrar la sección más visible
+            let bestSection: IntersectionObserverEntry | null = null;
+            let bestRatio = 0;
+            
+            entries.forEach(entry => {
+              // Para el hero (sticky), necesita un tratamiento especial
+              const index = sections.indexOf(entry.target);
+              if (index === 0) {
+                // El hero solo se considera activo si estamos muy arriba
+                if (window.scrollY < 100 && entry.isIntersecting) {
+                  if (entry.intersectionRatio > bestRatio) {
+                    bestSection = entry;
+                    bestRatio = entry.intersectionRatio;
+                  }
+                }
+              } else {
+                // Para otras secciones, usar la lógica normal
+                if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
+                  bestSection = entry;
+                  bestRatio = entry.intersectionRatio;
+                }
+              }
+            });
+            
+            if (bestSection && bestRatio >= 0.2) {
+              const sectionTarget = (bestSection as any).target as Element;
+              const index = sections.indexOf(sectionTarget);
+              if (index > -1 && index !== currentSectionIndex) {
+                // También verificar manualmente para confirmar
+                updateCurrentSection();
+              }
+            }
+          },
+          { 
+            root: null, 
+            rootMargin: '-15% 0px -15% 0px',
+            threshold: [0, 0.1, 0.25, 0.5, 0.75, 1]
+          }
+        );
+
+        // 5. Observar todas las secciones principales
+        sections.forEach(section => observer.observe(section));
+        
+        // También actualizar en scroll para mejor precisión
+        let scrollTimeout: number | null = null;
+        window.addEventListener('scroll', () => {
+          if (scrollTimeout) clearTimeout(scrollTimeout);
+          scrollTimeout = window.setTimeout(() => {
+            updateCurrentSection();
+            scrollTimeout = null;
+          }, 50);
+        }, { passive: true });
+
+        // 6. Función para hacer scroll a una sección principal
+        function scrollToSection(index: number) {
+          if (isThrottled) return; // No hacer nada si ya estamos en una animación
+          if (index < 0 || index >= sections.length) return; // No ir fuera de los límites
+
+          isThrottled = true;
+          
+          // Detectar dirección: ¿vamos hacia adelante o hacia atrás?
+          const goingForward = index > currentSectionIndex;
+          const goingBackward = index < currentSectionIndex;
+          
+          currentSectionIndex = index;
+          
+          const targetSection = sections[index] as HTMLElement;
+          if (!targetSection) {
+            isThrottled = false;
+            return;
+          }
+          
+          // Para el hero (index 0), ir al top de la página
+          if (index === 0) {
+            window.scrollTo({ 
+              top: 0, 
+              behavior: 'smooth' 
+            });
+            setTimeout(() => {
+              isThrottled = false;
+            }, throttleTime);
+            return;
+          }
+          
+          // Para Authority (index 1), si venimos desde abajo, ir cerca del final pero no al absoluto
+          // Esto permite hacer scroll hacia atrás de forma natural
+          if (index === 1 && goingBackward) {
+            const scrollHost = document.getElementById('clients-scroll');
+            if (scrollHost) {
+              // Usar requestAnimationFrame para asegurar que el layout esté calculado
+              requestAnimationFrame(() => {
+                const rect = scrollHost.getBoundingClientRect();
+                const scrollY = window.scrollY;
+                const start = scrollY + rect.top;
+                const totalHeight = scrollHost.offsetHeight - window.innerHeight;
+                
+                // Ir al 95% de la animación en lugar del 100%, para permitir scroll hacia atrás
+                // Esto evita que la animación se ejecute rápidamente cuando el usuario scrollea hacia arriba
+                const targetProgress = 0.95;
+                const targetScrollPosition = start + (totalHeight * targetProgress);
+                
+                window.scrollTo({ 
+                  top: Math.max(0, targetScrollPosition), 
+                  behavior: 'smooth' 
+                });
+                
+                setTimeout(() => {
+                  isThrottled = false;
+                }, throttleTime);
+              });
+              return;
+            }
+          }
+          
+          // Para otras secciones o cuando vamos hacia adelante en Authority, ir al inicio
+          const rect = targetSection.getBoundingClientRect();
+          const scrollY = window.scrollY;
+          const headerOffset = 80;
+          const targetY = scrollY + rect.top - headerOffset;
+          
+          window.scrollTo({ 
+            top: Math.max(0, targetY), 
+            behavior: 'smooth' 
+          });
+
+          // Poner un "seguro" para no disparar 100 scrolls
+          setTimeout(() => {
+            isThrottled = false;
+          }, throttleTime);
+        }
+
+        // 7. El "Director de Orquesta" (Listener Global de Teclado)
+        document.addEventListener('keydown', (e) => {
+          // Ignorar si estamos escribiendo en un formulario
+          if (e.target && (e.target as HTMLElement).tagName === 'INPUT' || e.target && (e.target as HTMLElement).tagName === 'TEXTAREA') {
+            return;
+          }
+          
+          // Verificar si la propagación fue detenida
+          if ((e as any).defaultPrevented) {
+            return; // El script local manejó esto. No hacer nada.
+          }
+          
+          // Si el evento llega aquí, el script local nos dio permiso.
+          
+          if (e.key === 'ArrowDown') {
+            e.preventDefault(); // Prevenir el scroll "poco a poco"
+            scrollToSection(currentSectionIndex + 1);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault(); // Prevenir el scroll "poco a poco"
+            scrollToSection(currentSectionIndex - 1);
+          }
+        });
+
+        // 8. Escuchar eventos personalizados de las secciones que piden cambio
+        window.addEventListener('requestNextSection', () => {
+          if (!isThrottled) {
+            scrollToSection(currentSectionIndex + 1);
+          }
+        });
+        
+        window.addEventListener('requestPrevSection', () => {
+          if (!isThrottled) {
+            scrollToSection(currentSectionIndex - 1);
+          }
+        });
+        
+
+      });
+    </script>
+    <!-- --- FIN DEL SCRIPT GLOBAL --- -->
+  </body>
+</html>

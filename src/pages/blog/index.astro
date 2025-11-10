@@ -1,0 +1,36 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const title = "Blog — Capalsa";
+const description = "Ideas sobre abastecimiento, sourcing y operación para empresas.";
+const posts: { title: string; excerpt: string; href: string }[] = [
+  { title: "Sourcing efectivo: de la especificación a la entrega", excerpt: "Claves para cotizar rápido y recibir a tiempo.", href: "#" },
+  { title: "Compras recurrentes: cómo asegurar continuidad", excerpt: "Planeación, reposiciones y acuerdos con proveedores.", href: "#" },
+];
+---
+<Layout title={title} description={description}>
+  <section class="min-h-[40vh] bg-black text-white px-8 lg:px-12 pt-24 md:pt-28 pb-16">
+    <div class="mx-auto max-w-7xl">
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
+        BLOG
+      </h1>
+      <p class="mt-6 text-neutral-300 max-w-2xl">Ideas y aprendizajes desde nuestras divisiones.</p>
+    </div>
+  </section>
+
+  <section class="bg-white px-8 lg:px-12 py-24 md:py-32">
+    <div class="mx-auto max-w-5xl space-y-6">
+      {posts.map((p, i) => (
+        <a href={p.href} class="group block border-b border-neutral-200 pb-6">
+          <div class="flex items-start gap-8">
+            <span class="text-sm text-neutral-400 mt-2">{String(i + 1).padStart(2, '0')}</span>
+            <div class="flex-1">
+              <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-2 group-hover:opacity-70 transition-opacity">{p.title}</h2>
+              <p class="text-neutral-600">{p.excerpt}</p>
+            </div>
+            <span class="hidden md:block text-neutral-400 group-hover:text-neutral-900 transition-colors mt-2">→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

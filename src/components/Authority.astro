@@ -1,0 +1,458 @@
+---
+const { id, class: className } = Astro.props;
+---
+<section id={id} class:list={[className, "relative z-30 px-8 lg:px-12 py-24 md:py-32"]} {...Astro.props}>
+  <div id="clients-bg" class="pointer-events-none absolute inset-0 bg-white"></div>
+  <div class="pointer-events-none absolute -z-10 inset-0 bg-[radial-gradient(closest-side,var(--color-orange-500)/0.06,transparent_60%)]"></div>
+  <div class="mx-auto max-w-7xl">
+  <div class="hidden items-start gap-8 mb-8 md:mb-12">
+      <span class="text-sm uppercase tracking-widest text-neutral-400">(02)</span>
+      <div class="flex-1">
+        <div class="h-px w-16 bg-linear-to-r from-orange-500/70 to-transparent mb-4"></div>
+        <p class="text-neutral-600 max-w-3xl">
+          Empresas que confían en CAPALSA
+        </p>
+      </div>
+    </div>
+
+    <div class="hidden">
+      <h2 class="text-3xl font-extrabold tracking-tight mb-6">Clientes y Respaldo</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="w-full h-40 bg-white border border-neutral-200 rounded-xl shadow-xl flex items-center justify-center">
+          <span class="text-lg font-bold tracking-tight opacity-60">AMAZON</span>
+        </div>
+        <div class="w-full h-40 bg-white border border-neutral-200 rounded-xl shadow-xl flex items-center justify-center">
+          <span class="text-lg font-bold tracking-tight opacity-60">EMPRESA A</span>
+        </div>
+        <div class="w-full h-40 bg-white border border-neutral-200 rounded-xl shadow-xl flex items-center justify-center">
+          <span class="text-lg font-bold tracking-tight opacity-60">EMPRESA B</span>
+        </div>
+        <div class="w-full h-40 bg-white border border-neutral-200 rounded-xl shadow-xl flex items-center justify-center">
+          <span class="text-lg font-bold tracking-tight opacity-60">EMPRESA C</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="clients-scroll" class="relative block min-h-[160vh]" aria-hidden="false">
+      <div id="clients-sticky" class="sticky top-20 md:top-24 h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
+      
+      <div class="absolute inset-0">
+          <div id="clients-title" class="absolute inset-0 z-0">
+            <div class="h-full max-w-7xl mx-auto px-8 lg:px-12 flex flex-col items-center justify-center">
+              <div class="block self-start text-neutral-500">
+                <div class="flex items-center gap-3">
+                  <span class="text-xs uppercase tracking-widest">(02)</span>
+                  <span class="text-xs md:text-sm uppercase tracking-widest">Empresas que confían en CAPALSA</span>
+                </div>
+                <div class="h-px w-16 bg-linear-to-r from-orange-500/70 to-transparent mt-3"></div>
+              </div>
+              <h2 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.95] text-center mt-6 md:mt-8">
+                Clientes y Respaldo
+              </h2>
+            </div>
+          </div>
+
+          
+          <div id="clients-cards" class="absolute inset-0 pointer-events-none">
+            <div class="client-card absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-104 bg-white border border-neutral-200 rounded-2xl shadow-2xl overflow-hidden will-change-transform" data-index="0" style="z-index: 104;">
+              <img src="/images/amazon-p.webp" alt="Amazon" class="w-full h-full object-cover" />
+            </div>
+            <div class="client-card absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-104 bg-white border border-neutral-200 rounded-2xl shadow-2xl overflow-hidden will-change-transform" data-index="1" style="z-index: 103;">
+              <img src="/images/marriot-p.webp" alt="Marriot" class="w-full h-full object-cover" />
+            </div>
+            <div class="client-card absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-104 bg-white border border-neutral-200 rounded-2xl shadow-2xl overflow-hidden will-change-transform" data-index="2" style="z-index: 102;">
+              <img src="/images/moctezuma-p.webp" alt="Moctezuma" class="w-full h-full object-cover" />
+            </div>
+            <div class="client-card absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-104 bg-white border border-neutral-200 rounded-2xl shadow-2xl overflow-hidden will-change-transform" data-index="3" style="z-index: 101;">
+              <img src="/images/temixco-p.webp" alt="Temixco" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function(){
+    const MIN_WIDTH = 650;
+    const scrollHost = document.getElementById('clients-scroll');
+    const sticky = document.getElementById('clients-sticky');
+    const titleEl = document.getElementById('clients-title');
+    const bgEl = document.getElementById('clients-bg');
+    const cards = Array.from(document.querySelectorAll('.client-card'));
+    const count = cards.length;
+
+    const titleMeta = document.querySelector('#clients-title .block.self-start');
+    const titleH2 = document.querySelector('#clients-title h2');
+    let measuredTitleHeight = 220;
+    
+    // Estado de la animación para coordinar con navegación global
+    let currentProgress = 0;
+    let isAtStart = true;
+    let isAtEnd = false;
+    const EDGE_THRESHOLD = 0.02; // 2% del inicio/fin (más estricto para evitar salidas accidentales)
+    const EXIT_THRESHOLD = 0.01; // 1% para considerar salida completa (muy cerca del borde)
+    
+    if(!scrollHost || !sticky || cards.length === 0) return;
+
+    function easeInOutCubic(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+    function lerp(a,b,t){ return a + (b-a)*t; }
+
+    function measureTitle() {
+      if (titleMeta && titleH2) {
+        const metaHeight = titleMeta.offsetHeight;
+        const styles = window.getComputedStyle(titleH2);
+        const h2MarginTop = parseFloat(styles.marginTop) || 0;
+        const h2Height = titleH2.offsetHeight;
+        measuredTitleHeight = metaHeight + h2MarginTop + h2Height;
+      } else {
+        measuredTitleHeight = 220;
+      }
+    }
+
+    function computeLayout(){
+      const vw = window.innerWidth;
+      const isMobile = vw <= MIN_WIDTH;
+      
+      // --- CORRECCIÓN 1: Reducir el scroll por etapa ---
+      const SCROLL_PER_STAGE = Math.round(window.innerHeight * 0.5); // Era 0.75
+      
+      let totalStages;
+      if(isMobile){
+        totalStages = count + 5; // 9
+      } else {
+        totalStages = count + 4; // 8
+      }
+
+      const totalScrollDistance = totalStages * SCROLL_PER_STAGE;
+      scrollHost.style.height = totalScrollDistance + window.innerHeight + 'px';
+    }
+
+    function measure(){
+      const rect = scrollHost.getBoundingClientRect();
+      const start = window.scrollY + rect.top;
+      const totalHeight = scrollHost.offsetHeight - window.innerHeight;
+      return { start, totalHeight };
+    }
+
+    function targetGridPositions(baseY){
+      const vw = window.innerWidth;
+      const cardW = cards[0].offsetWidth;
+      const cardH = cards[0].offsetHeight;
+      const gapX = 24; const gapY = 24;
+      if(vw <= MIN_WIDTH){
+        const stepY = cardH + gapY;
+        const start = baseY - (1.5 * stepY);
+        return [
+          { x: 0, y: Math.round(start + (0 * stepY)) },
+          { x: 0, y: Math.round(start + (1 * stepY)) },
+          { x: 0, y: Math.round(start + (2 * stepY)) },
+          { x: 0, y: Math.round(start + (3 * stepY)) },
+        ];
+      }
+      const colOffset = (cardW + gapX) / 2;
+      const rowOffset = (cardH + gapY) / 2;
+      return [
+        { x: -colOffset, y: baseY - rowOffset },
+        { x:  colOffset, y: baseY - rowOffset },
+        { x: -colOffset, y: baseY + rowOffset },
+        { x:  colOffset, y: baseY + rowOffset },
+      ];
+    }
+
+    let finalGeom = {
+      totalHeight: 1000,
+      titleFinalY: -300,
+      gridFinalBaseY: 100
+    };
+    function calculateFinalGeometry() {
+      const vw = window.innerWidth;
+      const isMobile = vw <= MIN_WIDTH;
+      const cardH = cards[0].offsetHeight || 300;
+      const gapY = 24;
+      const paddingTop = 0; 
+      const titleGridSpacing = 60;
+      const paddingBottom = 0;
+
+      let gridHeight;
+      if(isMobile){
+        gridHeight = (cardH * 4) + (gapY * 3);
+      } else {
+        gridHeight = (cardH * 2) + gapY;
+      }
+      
+      const totalFinalContentHeight = paddingTop + measuredTitleHeight + titleGridSpacing + gridHeight + paddingBottom;
+      const titleFinalY = (-totalFinalContentHeight / 2) + paddingTop + (measuredTitleHeight / 2);
+      const gridFinalBaseY = titleFinalY + (measuredTitleHeight / 2) + titleGridSpacing + (gridHeight / 2);
+
+      finalGeom = {
+        totalHeight: totalFinalContentHeight,
+        titleFinalY: titleFinalY,
+        gridFinalBaseY: gridFinalBaseY
+      };
+    }
+
+
+    function update(){
+      const { start, totalHeight } = measure();
+      if(totalHeight <= 0) return;
+      
+      const raw = (window.scrollY - start) / totalHeight;
+      const progress = clamp01(raw);
+      
+      // Actualizar estado de la animación
+      currentProgress = progress;
+      isAtStart = progress < EXIT_THRESHOLD;
+      isAtEnd = progress > (1 - EXIT_THRESHOLD);
+      
+      const vw = window.innerWidth;
+      const isMobile = vw <= MIN_WIDTH;
+      const vh = window.innerHeight;
+      
+      let totalStages;
+      if(isMobile){
+        totalStages = count + 5; // 9
+      } else {
+        totalStages = count + 4; // 8
+      }
+      
+      const s = progress * totalStages;
+      
+      const stackY = 20;
+      const stackScale = 0.92;
+      const stackOffsetPerCard = -6;
+      const cardH = cards[0].offsetHeight || 300;
+      const initialBelow = Math.round((vh / 2) + (cardH / 2) + 48);
+      
+      let titleExitStart, titleExitEnd, cardStackStart, spreadStart, pause2Start, spreadEnd;
+
+      if(isMobile){
+        const pause1Start = 1;
+        titleExitStart = 2;
+        titleExitEnd = 3;
+        cardStackStart = 3; 
+        spreadStart = count + 3; // 7
+        pause2Start = count + 4; // 8
+        spreadEnd = pause2Start;
+      } else {
+        const pause1Start = 1;
+        cardStackStart = 2;
+        spreadStart = count + 2; // 6
+        pause2Start = count + 3; // 7
+        spreadEnd = pause2Start;
+      }
+      const animationEnd = totalStages;
+
+      const headerHeight = isMobile ? 80 : 96;
+      const defaultStickyHeight = vh - headerHeight;
+      let currentStickyHeight = defaultStickyHeight;
+
+      const isSpreadPhase = s >= spreadStart;
+      const isPause2 = s >= pause2Start;
+
+      if(isSpreadPhase && !isPause2){
+        const spreadP = clamp01((s - spreadStart) / (spreadEnd - spreadStart));
+        const tp = easeInOutCubic(spreadP);
+        currentStickyHeight = lerp(defaultStickyHeight, finalGeom.totalHeight, tp);
+      } else if (isPause2) {
+        currentStickyHeight = finalGeom.totalHeight;
+      }
+      sticky.style.height = currentStickyHeight + 'px';
+      
+      let titleY = 0;
+      if(isMobile){
+        if(s >= titleExitStart && s < titleExitEnd){
+          const titleExitP = clamp01((s - titleExitStart) / (titleExitEnd - titleExitStart));
+          const titleExitDistance = vh * 1.2;
+          titleY = -lerp(0, titleExitDistance, easeInOutCubic(titleExitP));
+        } else if (s >= titleExitEnd) {
+          titleY = -vh * 1.2;
+        }
+      } else {
+        if(s < spreadStart){
+          titleY = 0;
+        } else if (s < pause2Start) {
+          const spreadP = clamp01((s - spreadStart) / (spreadEnd - spreadStart));
+          const tp = easeInOutCubic(spreadP);
+          titleY = lerp(0, finalGeom.titleFinalY, tp); 
+        } else {
+          titleY = finalGeom.titleFinalY;
+        }
+      }
+      titleEl.style.transform = `translate3d(0, ${titleY}px, 0)`;
+      
+      // --- CORRECCIÓN 2: Mantener el título siempre detrás ---
+      titleEl.style.zIndex = '0'; // Era 'isSpreadPhase ? '200' : '0''
+
+      const cardStage = Math.max(0, s - cardStackStart);
+      let baseY = 0; 
+      
+      if(isMobile){
+        const currentTitleOffset = s >= 2 ? vh * 1.2 : 0;
+        baseY = Math.round(-currentTitleOffset * 0.3 + 100);
+        if (isSpreadPhase) {
+          baseY = finalGeom.gridFinalBaseY;
+        }
+      } else {
+        if (isSpreadPhase) {
+          baseY = finalGeom.gridFinalBaseY; 
+        } else {
+          baseY = Math.round(Math.abs(titleY) * 0.6 + 100); 
+        }
+      }
+      
+      const targets = targetGridPositions(baseY);
+      const active = Math.min(Math.floor(cardStage), count - 1);
+      
+      cards.forEach((card, i)=>{
+        let z = 100 + i; // Las tarjetas siempre estarán en 100+
+        if(!isSpreadPhase && i === active && cardStage > i) {
+          z += 200; // La tarjeta activa se pone sobre las demás (300+)
+        }
+        card.style.zIndex = String(z);
+
+        let localStart = i;
+        let localEnd = i + 1;
+
+        let tx = 0, ty = 0, sc = 1, rot = 0, op = 1;
+        const stackedY = -stackY + (i * stackOffsetPerCard);
+        const stackedScale = stackScale;
+
+        if (isPause2) {
+          const t = targets[i] || {x:0,y:0};
+          tx = t.x;
+          ty = t.y;
+          sc = 1;
+          op = 1;
+        } else if (isSpreadPhase) {
+          const spreadP = clamp01((s - spreadStart) / (spreadEnd - spreadStart));
+          const tp = easeInOutCubic(spreadP);
+          const t = targets[i] || {x:0,y:0};
+          tx = lerp(0, t.x, tp); 
+          ty = lerp(stackedY, t.y, tp); 
+          sc = lerp(stackedScale, 1, tp);
+          op = 1;
+        } else {
+          if(cardStage <= localStart){
+            ty = initialBelow; op = 0;
+          } else if(cardStage >= localEnd){
+            ty = stackedY; sc = stackedScale; op = 1;
+          } else {
+            const p = easeInOutCubic(clamp01(cardStage - localStart));
+            ty = lerp(initialBelow, stackedY, p);
+            sc = lerp(1, stackedScale, p);
+            op = lerp(0, 1, p);
+          }
+        }
+
+        card.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${sc})`;
+        card.style.opacity = String(op);
+      });
+      
+      if(bgEl){
+        bgEl.style.opacity = '1';
+      }
+    }
+
+    let ticking = false;
+    function onScroll(){
+      if(!ticking){
+        requestAnimationFrame(()=>{ update(); ticking = false; });
+        ticking = true;
+      }
+    }
+
+    function onResize(){
+      measureTitle();
+      calculateFinalGeometry(); 
+      computeLayout(); 
+      update(); 
+    }
+
+    measureTitle();
+    calculateFinalGeometry();
+    computeLayout();
+    update();
+
+    // Interceptar eventos de navegación cuando la animación está en curso
+    let wheelThrottle = false;
+    function onWheel(e) {
+      if (wheelThrottle) return;
+      
+      // Verificar si estamos dentro de la sección Authority
+      const authoritySection = document.getElementById('clientes');
+      if (!authoritySection) return;
+      
+      const rect = authoritySection.getBoundingClientRect();
+      const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+      const isCentered = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
+      
+      // Solo interceptar si estamos dentro y centrados en la sección
+      if (!isInView || !isCentered) return;
+      
+      wheelThrottle = true;
+      setTimeout(() => { wheelThrottle = false; }, 150);
+      
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+      
+      // Siempre prevenir el scroll nativo cuando manejamos el evento
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Si estamos muy cerca del inicio (progress < 0.01) y scrolleamos hacia arriba, salir
+      if (currentProgress < EXIT_THRESHOLD && scrollingUp) {
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('requestPrevSection'));
+        }, 50);
+        return;
+      }
+      
+      // Si estamos muy cerca del final (progress > 0.99) y scrolleamos hacia abajo, salir
+      if (currentProgress > (1 - EXIT_THRESHOLD) && scrollingDown) {
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('requestNextSection'));
+        }, 50);
+        return;
+      }
+      
+      // En todos los demás casos, hacer scroll dentro de la sección
+      const scrollAmount = scrollingDown ? window.innerHeight * 0.25 : -window.innerHeight * 0.25;
+      window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+    }
+    
+    function onKeyDown(e) {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      
+      const movingDown = e.key === 'ArrowDown';
+      const movingUp = e.key === 'ArrowUp';
+      
+      // Si estamos al inicio y presionamos flecha arriba, pedir cambio a sección anterior
+      if (isAtStart && movingUp) {
+        // Dejamos que el script global maneje esto
+        return;
+      }
+      
+      // Si estamos al final y presionamos flecha abajo, pedir cambio a sección siguiente
+      if (isAtEnd && movingDown) {
+        // Dejamos que el script global maneje esto
+        return;
+      }
+      
+      // Si estamos en medio, hacer scroll dentro de la sección
+      if (!isAtStart && !isAtEnd) {
+        e.preventDefault();
+        e.stopPropagation();
+        const scrollAmount = movingDown ? window.innerHeight * 0.3 : -window.innerHeight * 0.3;
+        window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown, { passive: false });
+  })();
+</script>

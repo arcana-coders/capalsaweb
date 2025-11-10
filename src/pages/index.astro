@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Authority from "../components/Authority.astro";
+import Divisions from "../components/Divisions.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+
+const siteTitle = "Capalsa — Productos confiables, probados en Amazon y empresas";
+const siteDescription = "Capalsa es una empresa que conecta productos confiables con clientes exigentes. Subdominios verticales, experiencia comprobada en Amazon y ventas B2B.";
+---
+<Layout title={siteTitle} description={siteDescription}>
+  <Hero id="inicio" class="main-page-section" />
+  <Authority id="clientes" class="main-page-section" />
+  <Divisions id="soluciones" class="main-page-section" />
+  <About id="sobre" class="main-page-section" />
+  <Contact id="contacto" class="main-page-section" />
+</Layout>
+
+<script>
+  // Script para manejar wheel en secciones simples (Hero, About, Contact)
+  // Este script ya no es necesario porque el script global en Layout.astro
+  // maneja la navegación entre secciones principales.
+  // Se elimina para evitar conflictos.
+</script>

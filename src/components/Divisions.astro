@@ -1,0 +1,549 @@
+---
+// --- INICIO DE CAMBIOS: Aceptar props ---
+const { id, class: className } = Astro.props;
+// --- FIN DE CAMBIOS: Aceptar props ---
+
+const divisions = [
+  {
+    index: "01",
+    navTitle: "Sourcing",
+    bigTitle: "SOURCING",
+    description: "Dinos qué necesitas, nosotros lo conseguimos, validamos y entregamos.",
+    href: "#contacto",
+    imageBg: "/images/wp.webp", // Fondo general
+    imageMain: "/images/cap1.webp",
+    imageBw1: "/images/cap2.webp",
+    imageBw2: "/images/cap3.webp",
+  },
+  {
+    index: "02",
+    navTitle: "Juguetes",
+    bigTitle: "JUGUETES",
+    description: "Selección curada para mercados específicos, experiencia comprobada.",
+    href: "https://juguetes.capalsa.com",
+    imageBg: "/images/wp.webp",
+    imageMain: "/images/toys3.webp",
+    imageBw1: "/images/toys1.webp",
+    imageBw2: "/images/toys2.webp",
+  },
+  {
+    index: "03",
+    navTitle: "CPAP",
+    bigTitle: "CPAP",
+    description: "Equipos y accesorios para terapia respiratoria; vertical dedicada al sector salud.",
+    href: "https://cpap.capalsa.com",
+    imageBg: "/images/wp.webp",
+    imageMain: "/images/cpap3c.webp",
+    imageBw1: "/images/cpap1.webp",
+    imageBw2: "/images/cpap2.webp",
+  },
+  {
+    index: "04",
+    navTitle: "Verticales",
+    bigTitle: "MÁS",
+    description: "Expansión continua de categorías para cubrir lo que tu empresa necesita.",
+    href: "#contacto",
+    imageBg: "/images/wp.webp",
+    imageMain: "/images/mas3.webp",
+    imageBw1: "/images/mas1.webp",
+    imageBw2: "/images/mas2.webp",
+  },
+];
+const totalHeight = `calc(${divisions.length} * 100vh)`;
+const totalDivisions = divisions.length;
+---
+
+<style>
+  .slide-content {
+    transition-property: all;
+    transition-duration: 1000ms;
+    transition-timing-function: ease-in-out;
+  }
+  .slide-content.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 10;
+  }
+  .slide-content.is-above {
+    opacity: 0;
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+  .slide-content.is-below {
+    opacity: 0;
+    transform: translateY(50%);
+    z-index: 0;
+  }
+  
+  /* Breakpoint personalizado para móvil (hasta 766px) */
+  @media (max-width: 766px) {
+    .divisions-mobile-layout {
+      display: flex;
+    }
+    .divisions-desktop-layout {
+      display: none;
+    }
+  }
+  
+  @media (min-width: 767px) {
+    .divisions-mobile-layout {
+      display: none;
+    }
+    .divisions-desktop-layout {
+      display: block;
+    }
+  }
+</style>
+
+<!-- --- INICIO DE CAMBIOS: Aplicar props al <section> raíz --- -->
+<section id={id} class:list={[className, "relative z-10"]} style={`height: ${totalHeight};`} {...Astro.props}> 
+<!-- Tu <section id="divisions-wrapper" ...> ha sido reemplazada por esta -->
+  
+  <div class="sticky top-0 h-screen w-full">
+    
+    <!-- Fondo que cambia según el slide activo -->
+    <div 
+      id="divisions-bg"
+      class="absolute inset-0 z-0 opacity-30 transition-opacity duration-1000" 
+      style={`background-image: url(${divisions[0].imageBg});
+background-size: cover; background-position: center;`}
+    >
+    </div>
+
+    <div class="relative z-10 h-full w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 grid grid-cols-12 gap-8 items-center"> 
+      
+      <nav 
+        id="divisions-nav" 
+        class="hidden md:flex relative col-span-2 z-30 
+               flex-col justify-center
+               opacity-0 transition-opacity duration-500"
+      > 
+        <div class="mb-8"> 
+          <span id="section-counter" class="text-xl font-bold text-orange-500">01</span> 
+        </div>
+        <ul class="space-y-2"> 
+          {divisions.map((d) => (
+            <li>
+              <button 
+                class="nav-link text-lg font-medium text-neutral-500 hover:text-orange-500 transition-colors text-left" 
+                data-nav-for={d.index}
+                data-scroll-to={d.index}
+              >
+                {d.navTitle} 
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div id="slides-container" class="relative col-span-12 md:col-span-10 h-full overflow-hidden"> 
+        {divisions.map((d, i) => (
+          <div 
+            id={`slide-${d.index}`} 
+            class={`slide-content absolute inset-0 w-full h-full ${i === 0 ? 'is-active' : 'is-below'}`} 
+            data-index={d.index} 
+          >
+            <!-- Contenido interno del slide -->
+            <div class="w-full h-full relative">
+
+              <!-- Layout para móvil (hasta 766px) -->
+              <div class="divisions-mobile-layout flex flex-col items-center justify-center h-full px-4 py-8">
+                <!-- Título en móvil -->
+                <h2 class="text-4xl sm:text-5xl font-extrabold text-black uppercase leading-tight text-center mb-6 px-4 z-20"> 
+                  {d.bigTitle} 
+                </h2>
+                
+                <!-- Imagen principal en móvil -->
+                <div class="mb-6 w-full max-w-xs sm:max-w-sm z-10">
+                  <div class="relative w-full aspect-[4/3] bg-white p-2 sm:p-3 rounded-lg shadow-xl">
+                    <img src={d.imageMain} alt={d.bigTitle} class="w-full h-full object-cover rounded"/> 
+                  </div>
+                </div>
+
+                <!-- Descripción y botón en móvil -->
+                <div class="bg-white/95 p-4 sm:p-6 shadow-lg w-full max-w-sm border border-neutral-200 rounded-lg text-center z-20"> 
+                  <p class="text-neutral-700 mb-5 sm:mb-6 leading-relaxed text-sm sm:text-base">{d.description}</p> 
+                  <a href={d.href} class="group inline-flex items-center gap-2 sm:gap-3 bg-black text-white font-semibold py-2.5 sm:py-3 px-5 sm:px-6 hover:bg-neutral-800 transition-all duration-300 relative overflow-hidden rounded text-sm sm:text-base"> 
+                    <span class="relative z-10">{d.href.startsWith("http") ? "Visitar sitio" : "Contactar"}</span>
+                    <span class="relative z-10 text-orange-500 group-hover:translate-x-1 transition-transform">→</span>
+                    <div class="absolute inset-0 bg-orange-500/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Layout para desktop (desde 767px) -->
+              <div class="divisions-desktop-layout w-full h-full relative">
+                <div class="absolute left-0 z-20" style="top: 30%;">
+                  <h2 class="text-7xl md:text-8xl lg:text-9xl font-extrabold text-black uppercase leading-none"> 
+                    {d.bigTitle} 
+                  </h2>
+                </div>
+
+                <div class="absolute left-0 z-30 bg-white/95 p-6 shadow-lg max-w-md border border-neutral-200" style="top: 55%;"> 
+                  <p class="text-neutral-700 mb-6 leading-relaxed">{d.description}</p> 
+                  <a href={d.href} class="group inline-flex items-center gap-3 bg-black text-white font-semibold py-3 px-6 hover:bg-neutral-800 transition-all duration-300 relative overflow-hidden"> 
+                    <span class="relative z-10">{d.href.startsWith("http") ? "Visitar sitio" : "Contactar"}</span>
+                    <span class="relative z-10 text-orange-500 group-hover:translate-x-1 transition-transform">→</span>
+                    <div class="absolute inset-0 bg-orange-500/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                  </a>
+                </div>
+
+                <div class="absolute inset-0 z-10">
+                  <!-- Imagen pequeña superior izquierda (solo desktop) -->
+                  <div class="absolute" style="top: 150px; left: 20px; width: 200px; height: 150px; z-index: 20; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"> 
+                    <img src={d.imageBw1} alt="" class="w-full h-full object-cover grayscale"/> 
+                  </div>
+                  
+                  <!-- Imagen principal (desktop) -->
+                  <div class="absolute" style="top: 50%; left: 70%; transform: translate(-50%, -50%); width: 350px; height: 280px; z-index: 30; background: white; padding: 12px; border-radius: 6px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);"> 
+                    <img src={d.imageMain} alt={d.bigTitle} class="w-full h-full object-cover"/> 
+                  </div>
+                  
+                  <!-- Imagen pequeña inferior derecha (solo desktop) -->
+                  <div class="absolute" style="bottom: 80px; right: 20px; width: 240px; height: 180px; z-index: 10; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"> 
+                    <img src={d.imageBw2} alt="" class="w-full h-full object-cover grayscale"/> 
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="absolute top-0 left-0 w-full"> 
+    {divisions.map((d, i) => (
+      <div 
+        class="scroll-trigger fullpage-section pointer-events-none" 
+        data-index={d.index} 
+        style={`height: 100vh; top: ${i * 100}vh; position: absolute; left:0; right:0;`}
+      >
+      </div>
+    ))}
+  </div>
+
+</section>
+<!-- --- FIN DE CAMBIOS: Aplicar props al <section> raíz --- -->
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', 
+() => {
+    
+    // --- 1. Seleccionar Elementos ---
+    // Usamos el ID que viene de la prop para encontrar el wrapper
+    const wrapper = document.getElementById('soluciones'); 
+    const nav = document.getElementById('divisions-nav');
+    const counter = document.getElementById('section-counter');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const slides = document.querySelectorAll('.slide-content');
+    const triggers = document.querySelectorAll('.scroll-trigger');
+    
+    let lastActiveIndex: number = 1;
+
+    // --- INICIO DE CAMBIOS: Variables de estado para Teclado ---
+    let isThrottled = false;
+    // Debe coincidir con el 'throttleTime' del script global
+    const throttleTime = 1000; 
+    const totalSlides = 4; // Total de divisiones
+    
+    // Array de fondos para cada división - usando los valores reales
+    const divisionBackgrounds = [
+      '/images/bg-pattern.png',
+      '/images/bg-pattern.png',
+      '/images/bg-pattern.png',
+      '/images/bg-pattern.png'
+    ];
+    // --- FIN DE CAMBIOS: Variables de estado para Teclado ---
+
+    // --- 2. Función para Actualizar la UI (LÓGICA CORREGIDA) ---
+    // Esta función ya estaba bien en tu archivo original.
+    function updateActive(newIndex: number) {
+      if (newIndex === lastActiveIndex) return;
+      
+      const oldIndex = lastActiveIndex;
+      const direction = newIndex > oldIndex ? 'down' : 'up';
+
+      slides.forEach(slide => {
+        const slideIndex = parseInt(slide.getAttribute('data-index') || '0');
+
+        if (slideIndex === newIndex) {
+          slide.classList.add('is-active');
+          slide.classList.remove('is-above', 'is-below');
+        } else if (slideIndex === oldIndex) {
+          slide.classList.remove('is-active');
+          if (direction === 'down') {
+            slide.classList.add('is-above');
+          } else {
+            slide.classList.add('is-below');
+          }
+        } else {
+          slide.classList.remove('is-active');
+          if (slideIndex < newIndex) {
+            slide.classList.add('is-above');
+          } else {
+            slide.classList.add('is-below');
+          }
+        }
+      });
+      
+      lastActiveIndex = newIndex;
+
+      // Actualizar el fondo según el slide activo
+      const bgElement = document.getElementById('divisions-bg');
+      if (bgElement && divisionBackgrounds[newIndex - 1]) {
+        bgElement.style.backgroundImage = `url(${divisionBackgrounds[newIndex - 1]})`;
+      }
+
+      if (counter) {
+        counter.textContent = String(newIndex).padStart(2, '0');
+      }
+
+      navLinks.forEach(link => {
+        link.classList.remove('text-orange-500', 'font-bold');
+        link.classList.add('text-neutral-500');
+        if (link.getAttribute('data-nav-for') === String(newIndex).padStart(2, '0')) {
+          link.classList.add('text-orange-500', 'font-bold');
+          link.classList.remove('text-neutral-500');
+        }
+      });
+    }
+
+    // --- INICIO DE CAMBIOS: Nueva función de Scroll Local ---
+    function scrollToMiniSection(index: number) {
+      if (isThrottled) return;
+      if (index < 1 || index > totalSlides) return;
+
+      isThrottled = true;
+
+      const targetTrigger = document.querySelector(`.scroll-trigger[data-index="${String(index).padStart(2, '0')}"]`) as HTMLElement;
+      
+      if (targetTrigger) {
+        // Usar scrollIntoView que es más confiable para elementos dentro de contenedores
+        targetTrigger.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        // Actualizar la UI después de un pequeño delay para permitir que el scroll comience
+        setTimeout(() => {
+          updateActive(index);
+        }, 50);
+      }
+      
+      // Liberar el throttle después de un tiempo
+      setTimeout(() => {
+        isThrottled = false;
+      }, throttleTime);
+    }
+    // --- FIN DE CAMBIOS: Nueva función de Scroll Local ---
+
+    // --- INICIO DE CAMBIOS: Click usa la nueva función ---
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetIndexStr = link.getAttribute('data-scroll-to');
+        if (targetIndexStr) {
+          scrollToMiniSection(parseInt(targetIndexStr));
+        }
+      });
+    });
+    // --- FIN DE CAMBIOS: Click usa la nueva función ---
+
+    // --- 3. Observer para los Triggers de las Slides (Mejorado) ---
+    const slideObserver = new IntersectionObserver(
+      (entries) => {
+        // Encontrar el trigger más visible
+        let bestTrigger: IntersectionObserverEntry | null = null;
+        let bestRatio = 0;
+        
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
+            bestTrigger = entry;
+            bestRatio = entry.intersectionRatio;
+          }
+        });
+        
+        if (bestTrigger && bestRatio > 0.3) {
+          const triggerTarget = (bestTrigger as any).target as Element;
+          const indexStr = triggerTarget.getAttribute('data-index');
+          if (indexStr) {
+            const newIndex = parseInt(indexStr);
+            // Solo actualizar si es diferente para evitar loops
+            if (newIndex !== lastActiveIndex) {
+              updateActive(newIndex);
+            }
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-10% 0px -10% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+    triggers.forEach(trigger => slideObserver.observe(trigger));
+
+    // --- 4. Observer para la Navegación (Sin cambios) ---
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          if (nav) {
+            nav.classList.remove('opacity-0');
+            nav.classList.add('opacity-100');
+          }
+        } else {
+          if (nav) {
+            nav.classList.remove('opacity-100');
+            nav.classList.add('opacity-0');
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-10% 0px -10% 0px", 
+        threshold: 0,
+      }
+    );
+    if (wrapper) {
+      navObserver.observe(wrapper);
+    }
+
+    // --- 5. ¡NUEVO! SCRIPT LOCAL DE TECLADO ---
+    document.addEventListener('keydown', (e) => {
+      // Ignorar si estamos escribiendo en un formulario
+      if (e.target && (e.target as HTMLElement).tagName === 'INPUT' || e.target && (e.target as HTMLElement).tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      // Solo actuar si esta sección (Divisions) está visible.
+      // Comprobamos si el nav está visible (opacity-100).
+      const isDivisionsActive = nav && nav.classList.contains('opacity-100');
+      
+      if (!isDivisionsActive) {
+        // No estamos en la sección Divisions, no hacer nada
+        // y dejar que el script global actúe.
+        return;
+      }
+
+      // --- Lógica de Navegación Local ---
+      if (e.key === 'ArrowDown') {
+        e.preventDefault(); // Siempre prevenir el scroll nativo
+        
+        if (lastActiveIndex < totalSlides) {
+          // Navegación interna (ej. 01 -> 02)
+          e.stopPropagation(); // ¡IMPORTANTE! Silenciar al script global
+          scrollToMiniSection(lastActiveIndex + 1);
+        } else if (lastActiveIndex === totalSlides) {
+          // Estamos en el borde (04), dejar que el script global maneje
+          return;
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault(); // Siempre prevenir el scroll nativo
+        
+        if (lastActiveIndex > 1) {
+          // Navegación interna (ej. 03 -> 02)
+          e.stopPropagation(); // ¡IMPORTANTE! Silenciar al script global
+          scrollToMiniSection(lastActiveIndex - 1);
+        } else if (lastActiveIndex === 1) {
+          // Estamos en el borde (01), dejar que el script global maneje
+          return;
+        }
+      }
+    });
+    
+    // --- HANDLER DE WHEEL PARA COORDINAR CON SCRIPT GLOBAL ---
+    let wheelThrottle = false;
+    let wheelTimeout: number | null = null;
+    
+    window.addEventListener('wheel', (e: WheelEvent) => {
+      if (wheelThrottle) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      
+      // Verificar si estamos dentro de la sección Divisions
+      const divisionsSection = document.getElementById('soluciones');
+      if (!divisionsSection) return;
+      
+      const rect = divisionsSection.getBoundingClientRect();
+      // Verificar si la sección está visible en el viewport
+      const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+      const isCentered = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
+      
+      // Si no estamos en la sección, dejar que otros scripts manejen el scroll
+      if (!isInView) return;
+      
+      // Solo interceptar si la sección está razonablemente centrada
+      if (!isCentered) {
+        // Si estamos entrando a la sección, asegurar que se centre
+        if (rect.top > 0 && rect.top < window.innerHeight) {
+          // Permitir que el scroll normal continúe
+          return;
+        }
+      }
+      
+      wheelThrottle = true;
+      if (wheelTimeout) clearTimeout(wheelTimeout);
+      wheelTimeout = window.setTimeout(() => { 
+        wheelThrottle = false; 
+        wheelTimeout = null;
+      }, 800); // Tiempo suficiente para completar la animación
+      
+      const isAtStart = lastActiveIndex === 1;
+      const isAtEnd = lastActiveIndex === totalSlides;
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+      
+      // Prevenir el scroll nativo siempre que manejemos el evento
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // CASOS BORDE: inicio o fin
+      if (isAtStart && scrollingDown) {
+        // Avanzar a la mini-sección 2
+        scrollToMiniSection(2);
+        return;
+      }
+      
+      if (isAtEnd && scrollingUp) {
+        // Retroceder a la mini-sección previa
+        scrollToMiniSection(totalSlides - 1);
+        return;
+      }
+
+      // Salir de la sección sólo cuando:
+      // - Inicio y scroll arriba
+      if (isAtStart && scrollingUp) {
+        // Esperar un poco antes de cambiar de sección para evitar cambios accidentales
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('requestPrevSection'));
+        }, 100);
+        return;
+      }
+      
+      // - Final y scroll abajo
+      if (isAtEnd && scrollingDown) {
+        // Esperar un poco antes de cambiar de sección
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('requestNextSection'));
+        }, 100);
+        return;
+      }
+
+      // Navegación interna normal
+      if (scrollingDown && lastActiveIndex < totalSlides) {
+        scrollToMiniSection(lastActiveIndex + 1);
+      } else if (scrollingUp && lastActiveIndex > 1) {
+        scrollToMiniSection(lastActiveIndex - 1);
+      }
+    }, { passive: false });
+    // --- FIN DEL HANDLER DE WHEEL ---
+
+  });
+</script>

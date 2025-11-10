@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+const title = "FAQs — Capalsa";
+const description = "Preguntas frecuentes sobre nuestro servicio de sourcing y abastecimiento para empresas.";
+const faqs = [
+  {
+    q: "¿Qué tipo de productos pueden conseguir?",
+    a: "Desde mobiliario y luminarias hasta piezas específicas como tornillería o botones. Si existe disponibilidad en el mercado, lo conseguimos.",
+  },
+  {
+    q: "¿Cuáles son los tiempos de entrega?",
+    a: "Depende del requerimiento y disponibilidad. Cotizamos con tiempos estimados y opciones: nacional/ importación, urgente/regular.",
+  },
+  {
+    q: "¿Trabajan con mínimos de compra?",
+    a: "Sí, varía por categoría y proveedor. Indicamos MOQs y alternativas en la cotización.",
+  },
+  {
+    q: "¿Cómo cotizan?",
+    a: "Envíanos especificaciones (cantidad, medidas, materiales, fotos de referencia) y fecha objetivo. Respondemos con precio, plazo y condiciones.",
+  },
+  {
+    q: "¿Pueden manejar compras recurrentes?",
+    a: "Sí. Acordamos planificación y reposiciones para garantizar continuidad.",
+  },
+];
+---
+<Layout title={title} description={description}>
+  <section class="min-h-[40vh] bg-black text-white px-8 lg:px-12 pt-24 md:pt-28 pb-16">
+    <div class="mx-auto max-w-7xl">
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
+        PREGUNTAS FRECUENTES
+      </h1>
+    </div>
+  </section>
+
+  <section class="bg-white px-8 lg:px-12 py-24 md:py-32">
+    <div class="mx-auto max-w-4xl space-y-12">
+      {faqs.map((f, i) => (
+        <div class="border-b border-neutral-200 pb-8">
+          <div class="flex items-start gap-6">
+            <span class="text-sm uppercase tracking-widest text-neutral-400">{String(i + 1).padStart(2, '0')}</span>
+            <div class="flex-1">
+              <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-3">{f.q}</h2>
+              <p class="text-neutral-600 leading-relaxed">{f.a}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

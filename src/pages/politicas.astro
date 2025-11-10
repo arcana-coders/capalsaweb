@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+const title = "Políticas — Capalsa";
+const description = "Políticas de privacidad, condiciones de suministro y devoluciones para clientes empresariales.";
+---
+<Layout title={title} description={description}>
+  <section class="min-h-[40vh] bg-black text-white px-8 lg:px-12 pt-24 md:pt-28 pb-16">
+    <div class="mx-auto max-w-7xl">
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
+        POLÍTICAS
+      </h1>
+    </div>
+  </section>
+
+  <section class="bg-white px-8 lg:px-12 py-24 md:py-32">
+    <div class="mx-auto max-w-4xl space-y-10">
+      <article>
+        <h2 class="text-xl font-bold mb-3">Privacidad</h2>
+        <p class="text-neutral-600 leading-relaxed">
+          Respetamos tu privacidad. Solo utilizamos tus datos para responder consultas y mejorar nuestros servicios.
+        </p>
+      </article>
+      <article>
+        <h2 class="text-xl font-bold mb-3">Envíos, entregas y devoluciones</h2>
+        <p class="text-neutral-600 leading-relaxed">
+          Los plazos y condiciones se confirman en cada cotización. Para devoluciones por defectos o discrepancias, 
+          notifícanos dentro de los 7 días hábiles posteriores a la recepción para coordinar reposición o nota de crédito.
+        </p>
+      </article>
+      <article>
+        <h2 class="text-xl font-bold mb-3">Términos de uso</h2>
+        <p class="text-neutral-600 leading-relaxed">
+          El uso de este sitio implica aceptación de estas políticas. Podemos actualizar estos términos periódicamente.
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,329 @@
+---
+const { id, class: className } = Astro.props;
+---
+<section id={id} class:list={[className, "relative z-15 min-h-screen"]} {...Astro.props}>
+  
+  <!-- Fondo con gradiente sutil y efectos -->
+  <div class="absolute inset-0 bg-linear-to-br from-neutral-50 via-white to-orange-50/30"></div>
+  
+  <!-- Elementos decorativos flotantes (parallax) -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="about-float-1 absolute w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" style="top: 10%; left: -10%;"></div>
+    <div class="about-float-2 absolute w-80 h-80 bg-orange-400/8 rounded-full blur-3xl" style="bottom: 20%; right: -5%;"></div>
+    <div class="about-float-3 absolute w-64 h-64 bg-neutral-400/5 rounded-full blur-2xl" style="top: 50%; left: 50%;"></div>
+  </div>
+
+  <div class="relative z-10 px-6 sm:px-8 lg:px-12 py-20 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      
+      <!-- Header con animación de entrada -->
+      <div class="about-header opacity-0 mb-20">
+        <div class="flex items-start gap-6 md:gap-8 mb-12">
+          <span class="text-sm uppercase tracking-widest text-orange-500 font-bold mt-1">(04)</span>
+          <div class="flex-1">
+            <h2 class="text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-400 mb-6 font-semibold">
+              Cómo trabajamos
+            </h2>
+            <div class="h-1 w-20 bg-linear-to-r from-orange-500 via-orange-400 to-transparent mb-8 rounded-full"></div>
+            <h3 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6 bg-linear-to-br from-black via-neutral-800 to-neutral-600 bg-clip-text text-transparent">
+              Metodología de<br />abastecimiento estratégico
+            </h3>
+            <p class="text-lg md:text-xl text-neutral-600 max-w-3xl leading-relaxed">
+              Enlazamos productos confiables con clientes exigentes a través de procesos estandarizados, experiencia comprobada y tecnología.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats animados -->
+      <div class="about-stats grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-24 opacity-0">
+        <div class="stat-card group relative bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+          <div class="relative">
+            <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2" data-target="5">0</div>
+            <div class="text-xs md:text-sm uppercase tracking-widest text-neutral-500 font-semibold">Años experiencia</div>
+          </div>
+        </div>
+        
+        <div class="stat-card group relative bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+          <div class="relative">
+            <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2" data-target="100">0</div>
+            <div class="text-xs md:text-sm uppercase tracking-widest text-neutral-500 font-semibold">Clientes activos</div>
+          </div>
+        </div>
+        
+        <div class="stat-card group relative bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+          <div class="relative">
+            <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2"><span data-target="500">0</span>K</div>
+            <div class="text-xs md:text-sm uppercase tracking-widest text-neutral-500 font-semibold">Productos movidos</div>
+          </div>
+        </div>
+        
+        <div class="stat-card group relative bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+          <div class="relative">
+            <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2" data-target="98">0</div>
+            <div class="text-xs md:text-sm uppercase tracking-widest text-neutral-500 font-semibold">% Satisfacción</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline proceso con línea conectora y animaciones -->
+      <div class="about-timeline relative opacity-0">
+        <!-- Línea vertical conectora (solo desktop) -->
+        <div class="hidden md:block absolute left-[52px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-orange-200 to-transparent timeline-line" style="height: 0;"></div>
+        
+        <div class="space-y-12 md:space-y-16">
+          <!-- Step 1 -->
+          <div class="timeline-item opacity-0 transform translate-x-[-50px]">
+            <div class="flex items-start gap-6 md:gap-8 group">
+              <!-- Icono -->
+              <div class="relative flex-shrink-0">
+                <div class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-xl shadow-orange-500/30 group-hover:shadow-2xl group-hover:shadow-orange-500/40 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                  <svg class="w-12 h-12 md:w-14 md:h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+                <div class="absolute -inset-1 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+              </div>
+              
+              <!-- Contenido -->
+              <div class="flex-1 pt-2">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-xs md:text-sm uppercase tracking-[0.3em] text-orange-500 font-bold">Paso 01</span>
+                  <div class="h-px flex-1 bg-gradient-to-r from-orange-200 to-transparent"></div>
+                </div>
+                <h4 class="text-2xl md:text-3xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Sourcing ágil</h4>
+                <p class="text-neutral-600 leading-relaxed text-base md:text-lg max-w-2xl">
+                  Identificación y validación de proveedores para cubrir tu solicitud con costos y tiempos óptimos. Usamos nuestra red global y experiencia en Amazon.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="timeline-item opacity-0 transform translate-x-[-50px]">
+            <div class="flex items-start gap-6 md:gap-8 group">
+              <div class="relative flex-shrink-0">
+                <div class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-xl shadow-orange-500/30 group-hover:shadow-2xl group-hover:shadow-orange-500/40 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                  <svg class="w-12 h-12 md:w-14 md:h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div class="absolute -inset-1 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+              </div>
+              
+              <div class="flex-1 pt-2">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-xs md:text-sm uppercase tracking-[0.3em] text-orange-500 font-bold">Paso 02</span>
+                  <div class="h-px flex-1 bg-gradient-to-r from-orange-200 to-transparent"></div>
+                </div>
+                <h4 class="text-2xl md:text-3xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Control de calidad y transparencia</h4>
+                <p class="text-neutral-600 leading-relaxed text-base md:text-lg max-w-2xl">
+                  Especificaciones técnicas, pruebas de producto y comunicación directa en cada etapa. Documentación completa y trazabilidad total.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="timeline-item opacity-0 transform translate-x-[-50px]">
+            <div class="flex items-start gap-6 md:gap-8 group">
+              <div class="relative flex-shrink-0">
+                <div class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-xl shadow-orange-500/30 group-hover:shadow-2xl group-hover:shadow-orange-500/40 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                  <svg class="w-12 h-12 md:w-14 md:h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                </div>
+                <div class="absolute -inset-1 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+              </div>
+              
+              <div class="flex-1 pt-2">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-xs md:text-sm uppercase tracking-[0.3em] text-orange-500 font-bold">Paso 03</span>
+                  <div class="h-px flex-1 bg-gradient-to-r from-orange-200 to-transparent"></div>
+                </div>
+                <h4 class="text-2xl md:text-3xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Logística y continuidad operativa</h4>
+                <p class="text-neutral-600 leading-relaxed text-base md:text-lg max-w-2xl">
+                  Entregas a tiempo, reposición automática y solución inmediata a incidencias para mantener tu empresa trabajando sin interrupciones.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Animaciones scroll-triggered y efectos parallax
+    document.addEventListener('DOMContentLoaded', () => {
+      const aboutSection = document.getElementById('sobre');
+      if (!aboutSection) return;
+
+      // Intersection Observer para animaciones de entrada
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      // Animar header
+      const header = aboutSection.querySelector('.about-header');
+      if (header) {
+        const headerObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-fade-in-up');
+              setTimeout(() => {
+                entry.target.style.opacity = '1';
+              }, 100);
+            }
+          });
+        }, observerOptions);
+        headerObserver.observe(header);
+      }
+
+      // Animar stats con números que suben
+      const stats = aboutSection.querySelector('.about-stats');
+      if (stats) {
+        const statsObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.classList.add('animate-fade-in-up');
+              
+              // Animar números
+              const statCards = entry.target.querySelectorAll('.stat-card');
+              statCards.forEach((card, index) => {
+                setTimeout(() => {
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+                  
+                  const numberEl = card.querySelector('[data-target]');
+                  if (numberEl) {
+                    const target = parseInt(numberEl.getAttribute('data-target') || '0');
+                    animateNumber(numberEl, 0, target, 2000);
+                  }
+                }, index * 150);
+              });
+            }
+          });
+        }, observerOptions);
+        statsObserver.observe(stats);
+      }
+
+      // Animar timeline
+      const timeline = aboutSection.querySelector('.about-timeline');
+      if (timeline) {
+        const timelineObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              
+              // Animar línea vertical
+              const line = entry.target.querySelector('.timeline-line');
+              if (line) {
+                setTimeout(() => {
+                  line.style.transition = 'height 1.5s ease-out';
+                  line.style.height = '100%';
+                }, 300);
+              }
+              
+              // Animar items
+              const items = entry.target.querySelectorAll('.timeline-item');
+              items.forEach((item, index) => {
+                setTimeout(() => {
+                  item.style.opacity = '1';
+                  item.style.transform = 'translateX(0)';
+                }, 500 + (index * 300));
+              });
+            }
+          });
+        }, observerOptions);
+        timelineObserver.observe(timeline);
+      }
+
+      // Efecto parallax en elementos flotantes
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const rect = aboutSection.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (isVisible) {
+              const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+              
+              const float1 = aboutSection.querySelector('.about-float-1');
+              const float2 = aboutSection.querySelector('.about-float-2');
+              const float3 = aboutSection.querySelector('.about-float-3');
+              
+              if (float1) float1.style.transform = `translateY(${scrollProgress * 100}px)`;
+              if (float2) float2.style.transform = `translateY(${-scrollProgress * 80}px)`;
+              if (float3) float3.style.transform = `translate(-50%, ${scrollProgress * 60 - 50}%)`;
+            }
+            
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Función para animar números
+      function animateNumber(element, start, end, duration) {
+        const range = end - start;
+        const increment = range / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            current = end;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current).toString();
+        }, 16);
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.8s ease-out forwards;
+    }
+
+    .stat-card {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .timeline-item {
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Efectos hover adicionales */
+    .stat-card:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    .timeline-item:hover {
+      transform: translateX(8px) !important;
+    }
+  </style>
+</section>
