@@ -38,11 +38,7 @@ const { id, class: className } = Astro.props;
           </div>
 
           <div class="col-span-12 md:col-span-7 md:col-start-7">
-            <form class="space-y-8 max-w-xl" data-netlify="true" name="contacto" netlify-honeypot="bot-field">
-              <input type="hidden" name="form-name" value="contacto" />
-              <p class="hidden">
-                <label>No rellenar: <input name="bot-field" /></label>
-              </p>
+            <form class="space-y-8 max-w-xl" action="https://formspree.io/f/xnnlqrwn" method="POST" accept-charset="UTF-8">
 
               <div class="field group relative">
                   <label class="field-label absolute left-0 top-0 text-xl md:text-2xl text-white transition-transform duration-300 pointer-events-none">
@@ -76,7 +72,7 @@ const { id, class: className } = Astro.props;
                 </label>
                 <input
                   type="email"
-                  name="correo"
+                  name="email"
                   required
                   class="w-full bg-transparent border-b border-white hover:border-white focus:border-white outline-none transition-colors px-0 pt-8 pb-2 text-lg placeholder-transparent caret-white"
                   placeholder=""
@@ -89,7 +85,7 @@ const { id, class: className } = Astro.props;
                   Mensaje *
                 </label>
                 <textarea
-                  name="mensaje"
+                  name="message"
                   rows="4"
                   required
                   class="w-full bg-transparent border-b border-white hover:border-white focus:border-white outline-none transition-colors px-0 pt-8 pb-2 text-lg placeholder-transparent caret-white resize-y"
