@@ -194,9 +194,12 @@ const { id, class: className } = Astro.props;
         });
 
         if (res.ok) {
-          // show inline success message and reset form
-          feedback.innerHTML = '<div class="p-4 rounded bg-green-50 border border-green-200 text-green-800">Gracias — hemos recibido tu mensaje. Te responderemos pronto.</div>';
-          form.reset();
+          // Redirect to internal thank-you page instead of showing inline message
+          // Use a brief timeout so the user sees the button state change
+          setTimeout(() => {
+            window.location.href = '/gracias';
+          }, 200);
+          return;
         } else {
           // try to read JSON error
           let msg = 'Ocurrió un error al enviar. Intenta de nuevo más tarde.';
