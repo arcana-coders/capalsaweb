@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Gracias por suscribirte — Capalsa";
+const description = "Te hemos enviado un correo de confirmación; confirma tu suscripción para empezar a recibir nuestras novedades.";
+---
+
+<Layout title={title} description={description}>
+  <section class="min-h-screen flex items-center justify-center bg-white text-black px-6">
+    <div class="max-w-3xl text-center py-24">
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-4">¡Casi listo!</h1>
+      <p class="text-lg md:text-xl text-neutral-700 mb-6">Hemos enviado un correo a la dirección que proporcionaste. Revisa tu bandeja de entrada (y la carpeta de spam) y haz clic en el enlace de confirmación para completar tu suscripción.</p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-black bg-black text-white font-semibold hover:opacity-90 transition">Volver al inicio</a>
+        <a href="/contacto" class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-black text-black font-semibold hover:bg-black hover:text-white transition">Contacto</a>
+      </div>
+
+      <p class="mt-8 text-sm text-neutral-500">Si no recibes el correo en unos minutos, prueba con otra dirección o contáctanos en <a href="mailto:contacto@capalsa.com" class="underline">contacto@capalsa.com</a>.</p>
+    </div>
+  </section>
+</Layout>
